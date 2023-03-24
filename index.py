@@ -8,12 +8,7 @@ import streamlit as st
 from streamlit_chat import message
 from uuid import uuid4
 
-# exit if missing arguments
-if len(sys.argv) < 2:
-    print("Usage: python3 qa-langchain-streamlit.py <index_name>")
-    sys.exit(1)
-
-index_name = sys.argv[1]
+index_name = st.secrets["PINECONE_INDEX_NAME"]
 openai.organization = st.secrets["OPENAI_ORG_ID"]
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 embeddings = OpenAIEmbeddings()
