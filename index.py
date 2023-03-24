@@ -17,7 +17,7 @@ index_name = sys.argv[1]
 openai.organization = st.secrets["OPENAI_ORG_ID"]
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 embeddings = OpenAIEmbeddings()
-llm = OpenAI()
+llm = OpenAI(temperature=0)
 
 # initialize pinecone
 pinecone.init(api_key=st.secrets["PINECONE_API_KEY"], environment=st.secrets["PINECONE_ENVIRONMENT"])
