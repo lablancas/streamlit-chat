@@ -19,7 +19,7 @@ pinecone.init(api_key=st.secrets["PINECONE_API_KEY"], environment=st.secrets["PI
 
 index = pinecone.Index(index_name)
 docsearch = Pinecone(index, embeddings.embed_query, "text")
-chain = VectorDBQA.from_chain_type(llm=llm, chain_type="stuff", vectorstore=docsearch)
+chain = VectorDBQA.from_chain_type(llm=llm, chain_type="stuff", vectorstore=docsearch, return_source_documents=True)
 
 if 'message_history' not in st.session_state:
   st.session_state["message_history"] = []
@@ -32,8 +32,9 @@ def ask(question):
   if question == "":
     return
 
-  answer = chain.run(question)
-  return answer
+  answer = chain({ "query": question })
+  print(answer["source_documents"])
+  return answer["result"]
 
 for m in st.session_state["message_history"]:
   message(m["s"],is_user=m["user"],key=m["key"]) # display all the previous message
