@@ -1,7 +1,7 @@
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores import Pinecone
 from langchain.llms import OpenAI
-from langchain.chains import VectorDBQA
+from langchain.chains import RetrievalQA
 import pinecone
 import openai
 import streamlit as st
@@ -19,7 +19,7 @@ pinecone.init(api_key=st.secrets["PINECONE_API_KEY"], environment=st.secrets["PI
 
 index = pinecone.Index(index_name)
 docsearch = Pinecone(index, embeddings.embed_query, "text")
-chain = VectorDBQA.from_chain_type(llm=llm, chain_type="stuff", vectorstore=docsearch, return_source_documents=True)
+chain = RetrievalQA.from_chain_type(llm=llm, chain_type="stuff", retriever=docsearch.as_retriever(), return_source_documents=True)
 
 if 'message_history' not in st.session_state:
   st.session_state["message_history"] = []
